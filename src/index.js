@@ -20,7 +20,6 @@ refs.btnLoadMore.addEventListener('click', onBtnLoadMore);
 
 function onSearch(evt) {
   evt.preventDefault(); 
-
   page = 1;
   refs.gallery.innerHTML = ''; 
 
@@ -65,7 +64,7 @@ async function pixabay(name, page) {
 
     notification(
       response.data.hits.length, 
-      response.data.total 
+      response.data.totalHits 
     );
 
     createMarkup(response.data); 
