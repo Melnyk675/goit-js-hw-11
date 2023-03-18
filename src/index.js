@@ -3,76 +3,69 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-
-const refs = {
-  form: document.querySelector('.search-form'),
-  input: document.querySelector('input'),
-  gallery: document.querySelector('.gallery'),
-  btnLoadMore: document.querySelector('.load-more'),
-};
+const formEl = document.querySelector('#search-form');
+const inputEl = document.querySelector('[name="searchQuery"]');
+const galleryEL = document.querySelector('.gallery');
+const btnLoadMoreEl = document.querySelector('.load-more');
 
 let page = 1; 
 
-refs.btnLoadMore.style.display = 'none'; 
-refs.form.addEventListener('submit', onSearch);
-refs.btnLoadMore.addEventListener('click', onBtnLoadMore); 
+formEl.addEventListener('submit', onFormSubmit);
+btnLoadMoreEl.addEventListener('click', onLoadMoreClick);
 
 
-function onSearch(evt) {
-  evt.preventDefault(); 
+function onFormSubmit(e) {
+  e.preventDefault();
   page = 1;
-  refs.gallery.innerHTML = ''; 
+  const search = inputEl.value.trim();
 
-  const name = refs.input.value.trim(); 
-
-  if (name !== '') {
-    pixabay(name); 
-
-  } else {
-    refs.btnLoadMore.style.display = 'none';
-
-    return Notiflix.Notify.failure(
+  if (search) {
+    clearMarkup();
+    generateMarkup(search);
+  } else
+    Notiflix.Notify.info(
       'Sorry, there are no images matching your search query. Please try again.'
     );
-  }
 }
 
-function onBtnLoadMore() {
-  const name = refs.input.value.trim();
-  page += 1; 
-  pixabay(name, page); 
+function onLoadMoreClick() {
+  const search = inputEl.value.trim();
+  page += 1;
+  generateMarkup(search);
+  console.log(search);
 }
 
-async function pixabay(name, page) {
-  const API_URL = 'https://pixabay.com/api/';
-
-  const options = {
-    params: {
-      key: '34414398-5d6fc8cc69c48610553b5888c', 
-      q: name,
-      image_type: 'photo',
-      orientation: 'horizontal',
-      safesearch: 'true',
-      page: page,
-      per_page: 40,
-    },
-  };
-
+async function getPosts(search) {
+  const key = '34414398-5d6fc8cc69c48610553b5888c';
+  const imageType = 'photo';
+  const orientation = 'horizontal';
+  const safesearch = true;
+  const perPage = 40;
+  const API_URL = `https://pixabay.com/api/?key=${key}&q=${search}&image_type=${imageType}&orientation=${orientation}&safesearch=${safesearch}&per_page=${perPage}&page=${page}`;
+    
   try {
-   
-    const response = await axios.get(API_URL, options);
+    const response = await axios.get(API_URL);
+    const data = response.data.hits;
+    total += response.data.hits.length;
+    if (data.length !== 0) {
+      showLoadMoreBtn();
+    }
+    if (response.data.totalHits <= total || response.data.totalHits === 0) {
+      Notiflix.Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
+      hidesLoadMoreBtn();
 
-    notification(
-      response.data.hits.length, 
-      response.data.totalHits 
-    );
-
-    createMarkup(response.data); 
-  } catch (error) {
-    console.log(error);
+      console.log(response.data.totalHits);
   }
+  console.log(total);
+  console.log(response.data.totalHits);
+  return data;
+} catch (error) {
+} finally 
+{
 }
-
+}
 
 function createMarkup(arr) {
   const markup = arr.hits
@@ -109,33 +102,9 @@ function createMarkup(arr) {
   simpleLightBox.refresh(); 
 }
 
-
 const simpleLightBox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt', 
   captionDelay: 250, 
 });
 
 
-function notification(length, totalHits) {
-  if (length === 0) {
-
-    Notiflix.Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
-    return;
-  }
-
-  if (page === 1) {
-    refs.btnLoadMore.style.display = 'flex'; 
-
-    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-  }
-
-  if (length < 40 || length === totalHits) {
-    refs.btnLoadMore.style.display = 'none'; 
-    
-    Notiflix.Notify.info(
-      "We're sorry, but you've reached the end of search results."
-    );
-  }
-}
