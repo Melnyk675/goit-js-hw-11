@@ -11,6 +11,7 @@ const refs = {
 };
 
 let page = 1; 
+let total = 0;
 
 refs.btnLoadMore.style.display = 'none'; 
 refs.form.addEventListener('submit', onSearch);
@@ -62,7 +63,7 @@ async function pixabay(name, page) {
     const response = await axios.get(API_URL, options);
 
     notification(
-      response.data.hits.length,
+      total += response.data.hits.length,
       response.data.totalHits 
     );
 
@@ -132,7 +133,7 @@ function notification(length, totalHits) {
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
   }
 
-  if (length < 40) {
+  if (response.data.totalHits <= total || response.data.totalHits === 0) {
     refs.btnLoadMore.style.display = 'none'; 
     
     Notiflix.Notify.info(
