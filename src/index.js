@@ -118,7 +118,7 @@ const simpleLightBox = new SimpleLightbox('.gallery a', {
 });
 
 
-function notification(length, totalPages) {
+function notification(length, totalHits, totalPages) {
   if (length === 0) {
 
     Notiflix.Notify.failure(
