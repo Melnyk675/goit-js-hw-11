@@ -8,6 +8,7 @@ const refs = {
   input: document.querySelector('input'),
   gallery: document.querySelector('.gallery'),
   btnLoadMore: document.querySelector('.load-more'),
+  totalHits : 500,
   totalPages : Math.ceil(totalHits / per_page),
 };
 
