@@ -132,7 +132,7 @@ function notification(length, totalHits) {
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
   }
 
-  if (length < 40 || totalHits === 0) {
+  if (totalHits <= total || totalHits === 0) {
     refs.btnLoadMore.style.display = 'none'; 
     
     Notiflix.Notify.info(
