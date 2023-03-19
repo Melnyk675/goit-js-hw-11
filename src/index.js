@@ -57,13 +57,14 @@ async function pixabay(name, page) {
     },
   };
 
+
   try {
     const response = await axios.get(API_URL, options);
-   
+
     notification(
-      response.data.hits.length, 
       response.data.totalHits 
     );
+
 
     createMarkup(response.data); 
   } catch (error) {
@@ -123,13 +124,14 @@ function notification(length, totalHits) {
     return;
   }
 
+
   if (page === 1) {
     refs.btnLoadMore.style.display = 'flex'; 
 
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
   }
 
-  if (length === totalHits) {
+  if (length < page || length === totalHits) {
     refs.btnLoadMore.style.display = 'none'; 
     
     Notiflix.Notify.info(
