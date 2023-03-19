@@ -8,6 +8,7 @@ const refs = {
   input: document.querySelector('input'),
   gallery: document.querySelector('.gallery'),
   btnLoadMore: document.querySelector('.load-more'),
+  totalPages : Math.ceil(totalHits / per_page),
 };
 
 let page = 1; 
@@ -132,7 +133,7 @@ function notification(length, totalHits) {
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
   }
 
-  if (totalHits <= total || totalHits === 0) {
+  if (length < 40 || totalHits === 500) {
     refs.btnLoadMore.style.display = 'none'; 
     
     Notiflix.Notify.info(
