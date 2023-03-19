@@ -8,8 +8,6 @@ const refs = {
   input: document.querySelector('input'),
   gallery: document.querySelector('.gallery'),
   btnLoadMore: document.querySelector('.load-more'),
-  totalHits : 500,
-  totalPages : Math.ceil(totalHits / per_page),
 };
 
 let page = 1; 
@@ -118,7 +116,7 @@ const simpleLightBox = new SimpleLightbox('.gallery a', {
 });
 
 
-function notification(length, totalHits, totalPages) {
+function notification(length, totalHits) {
   if (length === 0) {
 
     Notiflix.Notify.failure(
@@ -134,7 +132,7 @@ function notification(length, totalHits, totalPages) {
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
   }
 
-  if (length < 40 || page >= totalPages) {
+  if (length < 40) {
     refs.btnLoadMore.style.display = 'none'; 
     
     Notiflix.Notify.info(
