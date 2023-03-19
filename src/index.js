@@ -62,6 +62,7 @@ async function pixabay(name, page) {
     const response = await axios.get(API_URL, options);
 
     notification(
+      response.data.hits.length,
       response.data.totalHits 
     );
 
