@@ -126,18 +126,18 @@ function notification(length, totalHits) {
     return;
   }
 
+  if (page === 1) {
+    refs.btnLoadMore.style.display = 'flex'; 
+
+    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+  }
+
   if (totalHits <= total || totalHits === 0) {
     refs.btnLoadMore.style.display = 'none'; 
     
     Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
     );
-  }
-
-  if (page === 1) {
-    refs.btnLoadMore.style.display = 'flex'; 
-
-    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
   }
 }
 
