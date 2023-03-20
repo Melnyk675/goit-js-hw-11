@@ -13,7 +13,27 @@ ol {
   padding-left: 0;
 }
 button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  padding: 5px 20px;
+  all: unset;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  background: rgb(47, 231, 68);
+  border: none;
   cursor: pointer;
+}
+button::after,
+button::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: -99999;
+  transition: all 0.4s;
 }
 img {
   display: block;
@@ -40,15 +60,14 @@ img {
   position: absolute;
 }
 .form {
-  position: fixed;
-  z-index: 3;
   display: flex;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 .form input {
   width: 80vw;
   border: unset;
-  background: none;
+  background:rgb(71, 137, 195);
   border-bottom: 0.05rem dotted #212121;
 }
 .form input:focus-visible {

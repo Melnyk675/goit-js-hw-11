@@ -30,6 +30,15 @@ const handleSubmit = e => {
   );
   isLoading = false;
   getImages();
+
+  const name = refs.input.value.trim(); 
+
+  if (name !== '') {
+    pixabay(name); 
+  } 
+    return Notiflix.Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
 };
 
 searchForm.addEventListener('submit', handleSubmit);
