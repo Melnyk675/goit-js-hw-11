@@ -88,12 +88,13 @@ const renderImages = data => {
   isLoading = false;
 };
 
-function getImages() {
+async function getImages() {
   if (isLoading) return;
   isLoading = true;
   console.log(`Fetching images for query: ${searchSubmit}, page: ${page}`);
-  getData(searchSubmit, page, per_page)
-    .then(data => {
+  
+  try {
+    const data = await getData(searchSubmit, page, per_page);
       if (data.hits.length === 0) {
         Notiflix.Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
@@ -104,11 +105,11 @@ function getImages() {
       if (page === 1)
         Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
       renderImages(data);
-    })
-    .catch(error => {
+    }catch(error) {
       console.error('you get this error:', error);
-    });
+    }
 }
+
 
 window.addEventListener('scroll', () => {
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
