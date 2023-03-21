@@ -31,10 +31,9 @@ const handleSubmit = e => {
   isLoading = false;
   getImages();
 
-  const name = refs.input.value.trim();
 
   if (searchSubmit !== '') {
-    pixabay(name); 
+    return; 
   } else 
     return Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
